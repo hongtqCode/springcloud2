@@ -1,0 +1,26 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: zuul-service
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9090/eureka
+
+#默认的访问规则:ip:端口/微服务的服务名称/微服务请求地址 例如:http://localhost:8082/index-service/index/home
+#index-service为服务名称,/index/home是微服务的请求地址
+#自定义路由规则,默认的访问规则依然生效
+zuul:
+  routes:
+    api-index:
+      path: /index/**
+      serviceId: index-service
+    api-business:
+      path: /business/**
+      serviceId: business-service
+  #设置修改默认的访问规则,统一入口为上面的配置,忽略其他入口
+  ignored-patterns: /*-service/**
+  #处理http请求头为空的问题
+  #默认zuul会屏蔽cookie,cookie不会传到下游服务,这里设置为空则取消默认的黑名单,表示会传递到下游服务
+  sensitive-headers:

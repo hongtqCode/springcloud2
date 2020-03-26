@@ -1,0 +1,16 @@
+server:
+  port: 10086
+
+spring:
+  application:
+    name: config-server
+  #配置远程github中的配置仓库
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/hongtqCode/config.git
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9090/eureka

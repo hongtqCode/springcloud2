@@ -1,0 +1,28 @@
+#bootstrap用于初始化之前进行解析,application是项目启动后初始化数据加载,加载顺序比application早
+server:
+  port: 8080
+spring:
+  application:
+    name: business-service
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: CONFIG-SERVER
+  profiles:
+    active: test
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9090/eureka
+
+#spring:
+#  profiles: businessService2
+#server:
+#  port: 8081
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:9090/eureka
+
+

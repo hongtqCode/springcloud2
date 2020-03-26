@@ -1,0 +1,46 @@
+
+server:
+  port: 8082
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9090/eureka
+spring:
+  application:
+    name: index-service
+  zipkin:
+    base-url: http://localhost:8848
+  sleuth:
+    sampler:
+      probability: 1.0 #设置跑一次记录一次,测试用,默认为0.01,100请求发一次
+
+#配置调用business-service服务采用的负载均衡策略
+#配置随机访问(默认式轮询的策略)
+#重试机制配置(在restTemplate下,fegin下已自动配置好)
+business-service:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+    OKToRetryOnAllOperations: true #是否对所有操作都进行重试
+    MaxAutoRetriesNextServer: 2 #切换实例的重试次数
+
+#开启熔断机制
+feign:
+  hystrix:
+    enabled: true
+
+#暴露所有的健康监控节点(对外开放)
+#访问http://localhost:8082/hystrix
+#访问http://localhost:XXXX/actuator/hystrix.stream,即可看到实时的监控数据
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+#添加日志埋点输出配置
+logging:
+  level:
+    root: info
+    org.springframework.web.servlet.DispatcherServlet: debug
+    org.springframework.cloud.sleuth: debug
+
